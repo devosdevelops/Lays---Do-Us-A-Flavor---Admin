@@ -1,6 +1,9 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import LoginView from '../views/LoginView.vue';
 import DashboardView from '../views/DashboardView.vue';
+import SubmissionsView from '../views/SubmissionsView.vue';
+import UsersView from '../views/UsersView.vue';
+import VotesView from '../views/VotesView.vue';
 import { useAuth } from '../composables/useAuth.js';
 
 const routes = [
@@ -11,8 +14,25 @@ const routes = [
     component: DashboardView,
     name: 'Dashboard',
     meta: { requiresAuth: true }
+  },
+  {
+    path: '/dashboard/submissions',
+    component: SubmissionsView,
+    name: 'Submissions',
+    meta: { requiresAuth: true }
+  },
+  {
+    path: '/dashboard/users',
+    component: UsersView,
+    name: 'Users',
+    meta: { requiresAuth: true }
+  },
+  {
+    path: '/dashboard/votes',
+    component: VotesView,
+    name: 'Votes',
+    meta: { requiresAuth: true }
   }
-  // TODO: Add nested routes for /dashboard/submissions and /dashboard/users when ready
 ];
 
 const router = createRouter({
