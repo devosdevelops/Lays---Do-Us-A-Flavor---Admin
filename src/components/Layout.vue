@@ -23,4 +23,3 @@ import Sidebar from './Sidebar.vue';
 import Topbar from './Topbar.vue';
 </script>
 
-</script>
