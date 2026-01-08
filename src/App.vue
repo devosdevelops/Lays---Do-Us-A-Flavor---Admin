@@ -1,7 +1,9 @@
 <template>
-  <router-view />
+  <div class="app-layout">
+    <router-view />
+  </div>
 </template>
 
 <script setup>
-// ...existing code...
+// App layout wrapper
 </script>

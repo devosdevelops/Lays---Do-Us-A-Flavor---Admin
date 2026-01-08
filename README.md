@@ -1,6 +1,6 @@
-# Vue 3 Admin Dashboard
+# Vue 3 Admin Dashboard Skeleton
 
-This is a scaffold for a Vue 3 admin dashboard using Vite, Vue Router, Pinia, and Axios.
+This is a clean scaffold for a Vue 3 admin dashboard using Vite and Vue Router.
 
 ## Project Structure
 
