@@ -69,4 +69,4 @@ const handleLogin = async () => {
   
   // Placeholder: redirect to dashboard (remove in real implementation)
   router.push('/dashboard');
-};
+};</script>

@@ -49,3 +49,5 @@ const pageTitle = computed(() => {
   return titles[route.path] || 'Dashboard';
 });
 </script>
+
+</script>

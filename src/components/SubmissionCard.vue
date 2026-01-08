@@ -101,3 +101,5 @@ const handleRemove = () => {
   emit('remove', submission);
   // TODO: Show confirmation modal, then call API to delete
 };
+</script>
+

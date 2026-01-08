@@ -49,4 +49,4 @@ import UserList from '../components/UserList.vue';
 // TODO: Replace mock values with real API calls to fetch submissions and users
 const totalSubmissions = ref(24);
 const totalUsers = ref(156);
-const totalVotes = ref(1240);
+const totalVotes = ref(1240);</script>
