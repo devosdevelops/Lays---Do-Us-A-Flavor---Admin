@@ -27,7 +27,7 @@ export const useAuth = () => {
     localStorage.removeItem('auth_user');
   };
 
-  const login = async (username, password) => {
+  const login = async (email, password) => {
     isLoading.value = true;
     error.value = null;
 
@@ -38,7 +38,7 @@ export const useAuth = () => {
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ username, password })
+        body: JSON.stringify({ email, password })
       });
 
       if (!response.ok) {

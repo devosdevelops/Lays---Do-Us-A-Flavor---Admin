@@ -4,14 +4,14 @@
       <h1 class="text-3xl font-bold text-center text-gray-900 mb-8">Admin Login</h1>
       
       <form @submit.prevent="handleLogin" class="space-y-6">
-        <!-- Username Input -->
+        <!-- Email Input -->
         <div>
-          <label for="username" class="block text-sm font-medium text-gray-700 mb-2">Username</label>
+          <label for="email" class="block text-sm font-medium text-gray-700 mb-2">Email</label>
           <input
-            id="username"
-            v-model="username"
-            type="text"
-            placeholder="Enter your username"
+            id="email"
+            v-model="email"
+            type="email"
+            placeholder="Enter your email"
             class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none"
             required
           />
@@ -59,7 +59,7 @@ import { useAuth } from '../composables/useAuth.js';
 
 const router = useRouter();
 const { login, isLoading } = useAuth();
-const username = ref('');
+const email = ref('');
 const password = ref('');
 const errorMessage = ref('');
 
@@ -67,13 +67,13 @@ const handleLogin = async () => {
   errorMessage.value = '';
   
   // Validate inputs
-  if (!username.value || !password.value) {
-    errorMessage.value = 'Please enter both username and password';
+  if (!email.value || !password.value) {
+    errorMessage.value = 'Please enter both email and password';
     return;
   }
 
   // Call login API
-  const result = await login(username.value, password.value);
+  const result = await login(email.value, password.value);
   
   if (result.success) {
     // Redirect to dashboard on successful login
