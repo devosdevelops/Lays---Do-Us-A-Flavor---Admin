@@ -38,14 +38,13 @@
         <!-- Login Button -->
         <button
           type="submit"
-          class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded-md transition duration-200"
+          class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded-md transition duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+          :disabled="isLoading"
         >
-          Sign In
+          {{ isLoading ? 'Signing in...' : 'Sign In' }}
         </button>
       </form>
 
-      <!-- TODO: Add real authentication logic (API call to POST /api/users/login) -->
-      <!-- TODO: Store token in localStorage and redirect to dashboard on success -->
       <p class="text-center text-gray-600 text-sm mt-4">
         <a href="#" class="text-indigo-600 hover:underline">Forgot password?</a>
       </p>
@@ -56,17 +55,31 @@
 <script setup>
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
+import { useAuth } from '../composables/useAuth.js';
 
 const router = useRouter();
+const { login, isLoading } = useAuth();
 const username = ref('');
 const password = ref('');
 const errorMessage = ref('');
 
 const handleLogin = async () => {
-  // TODO: Replace with real API call to POST /api/users/login
-  // TODO: Validate credentials and handle errors
-  console.log('Login attempt with:', { username: username.value, password: password.value });
+  errorMessage.value = '';
   
-  // Placeholder: redirect to dashboard (remove in real implementation)
-  router.push('/dashboard');
-};</script>
+  // Validate inputs
+  if (!username.value || !password.value) {
+    errorMessage.value = 'Please enter both username and password';
+    return;
+  }
+
+  // Call login API
+  const result = await login(username.value, password.value);
+  
+  if (result.success) {
+    // Redirect to dashboard on successful login
+    router.push('/dashboard');
+  } else {
+    errorMessage.value = result.error || 'Login failed. Please try again.';
+  }
+};
+</script>

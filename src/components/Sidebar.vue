@@ -58,17 +58,18 @@
 <script setup>
 import { useRoute } from 'vue-router';
 import { useRouter } from 'vue-router';
+import { useAuth } from '../composables/useAuth.js';
 
 const route = useRoute();
 const router = useRouter();
+const { logout } = useAuth();
 
 const isActive = (path) => {
   return route.path.startsWith(path);
 };
 
 const handleLogout = () => {
-  // TODO: Implement logout logic (clear token, redirect to /login)
-  console.log('Logout clicked');
+  logout();
   router.push('/login');
 };
 </script>
