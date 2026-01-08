@@ -50,4 +50,3 @@ const pageTitle = computed(() => {
 });
 </script>
 
-</script>
