@@ -7,6 +7,26 @@ This is the backend API for the Lay's flavor design contest. The API handles use
 **Base URL (Production):** `https://lays-do-us-a-flavor-api.onrender.com`  
 **Base URL (Local Development):** `http://localhost:3000`
 
+## Quick Reference: Core Endpoints
+
+- **Health Check:** `GET /api/health` — Verify API is running
+- **Authentication:** 
+  - `POST /api/users/register` — Register new account
+  - `POST /api/users/login` — Login and get JWT token
+  - `GET /api/users/profile` — Get current user profile (Protected)
+- **Submissions:**
+  - `GET /api/submissions` — Get all submissions (Public)
+  - `POST /api/submissions` — Create submission (Protected)
+  - `DELETE /api/submissions/:id` — Delete submission (Protected)
+  - `GET /api/submissions/my` — Get user's submissions (Protected)
+- **Votes:**
+  - `POST /api/votes` — Vote on submission (Protected)
+  - `GET /api/votes/:submissionId` — Get vote count for submission (Public)
+  - `GET /api/votes` — Get all votes (Admin Protected)
+- **Admin:**
+  - `GET /api/users` — Get all users (Admin Protected)
+  - `PATCH /api/users/:id` — Ban/unban user (Admin Protected)
+
 ---
 
 ## Authentication
