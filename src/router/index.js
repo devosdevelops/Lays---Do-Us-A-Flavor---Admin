@@ -3,8 +3,10 @@ import LoginView from '../views/LoginView.vue';
 import DashboardView from '../views/DashboardView.vue';
 
 const routes = [
+  { path: '/', redirect: '/dashboard' },
   { path: '/login', component: LoginView },
   { path: '/dashboard', component: DashboardView }
+  // TODO: Add nested routes for /dashboard/submissions and /dashboard/users when ready
 ];
 
 const router = createRouter({
