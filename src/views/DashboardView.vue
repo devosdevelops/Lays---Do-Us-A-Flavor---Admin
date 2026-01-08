@@ -41,12 +41,38 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 import Layout from '../components/Layout.vue';
 import SubmissionList from '../components/SubmissionList.vue';
 import UserList from '../components/UserList.vue';
+import { useAuth } from '../composables/useAuth.js';
+import { getAllSubmissions, getAllUsers, getAllVotes } from '../services/api.js';
 
-// TODO: Replace mock values with real API calls to fetch submissions and users
-const totalSubmissions = ref(24);
-const totalUsers = ref(156);
-const totalVotes = ref(1240);</script>
+const { token } = useAuth();
+const totalSubmissions = ref(0);
+const totalUsers = ref(0);
+const totalVotes = ref(0);
+const isLoading = ref(true);
+
+onMounted(async () => {
+  isLoading.value = true;
+  
+  try {
+    // Fetch submissions
+    const submissions = await getAllSubmissions();
+    totalSubmissions.value = Array.isArray(submissions) ? submissions.length : 0;
+    
+    // Fetch users
+    const users = await getAllUsers(token.value);
+    totalUsers.value = Array.isArray(users) ? users.length : 0;
+    
+    // Fetch votes
+    const votes = await getAllVotes(token.value);
+    totalVotes.value = Array.isArray(votes) ? votes.length : 0;
+  } catch (err) {
+    console.error('Error loading dashboard data:', err);
+  } finally {
+    isLoading.value = false;
+  }
+});
+</script>

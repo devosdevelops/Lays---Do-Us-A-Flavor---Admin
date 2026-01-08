@@ -53,72 +53,147 @@ export const getUserProfile = async (token) => {
 
 /**
  * Get All Users (Admin)
- * GET /api/users (Admin Protected)
- * TODO: Implement real call
+ * GET /api/admin/users (Admin Protected)
  */
 export const getAllUsers = async (token) => {
-  console.log('TODO: Implement GET /api/users');
-  // Returns: Array of users
+  try {
+    const response = await fetch(`${API_BASE}/api/admin/users`, {
+      headers: { 'Authorization': `Bearer ${token}` }
+    });
+    if (!response.ok) throw new Error('Failed to fetch users');
+    return await response.json();
+  } catch (err) {
+    console.error('Error fetching users:', err);
+    return [];
+  }
 };
 
 /**
  * Ban/Unban User (Admin)
- * PATCH /api/users/:id (Admin Protected)
- * TODO: Implement real call
+ * POST /api/admin/users/:userId/ban (Admin Protected)
  */
 export const banUser = async (userId, token, isBanned) => {
-  console.log('TODO: Implement PATCH /api/users/:id', { userId, isBanned });
+  try {
+    const response = await fetch(`${API_BASE}/api/admin/users/${userId}/ban`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
+      body: JSON.stringify({ isBanned })
+    });
+    if (!response.ok) throw new Error('Failed to ban user');
+    return await response.json();
+  } catch (err) {
+    console.error('Error banning user:', err);
+    return null;
+  }
 };
 
 /**
  * Get All Submissions
  * GET /api/submissions (Public)
- * TODO: Implement real call
  */
 export const getAllSubmissions = async () => {
-  console.log('TODO: Implement GET /api/submissions');
-  // Returns: Array of submissions
+  try {
+    const response = await fetch(`${API_BASE}/api/submissions`);
+    if (!response.ok) throw new Error('Failed to fetch submissions');
+    return await response.json();
+  } catch (err) {
+    console.error('Error fetching submissions:', err);
+    return [];
+  }
 };
 
 /**
  * Get User's Submissions
  * GET /api/submissions/my (Protected)
- * TODO: Implement real call
  */
 export const getUserSubmissions = async (token) => {
-  console.log('TODO: Implement GET /api/submissions/my');
-  // Returns: Array of user's submissions
+  try {
+    const response = await fetch(`${API_BASE}/api/submissions/my`, {
+      headers: { 'Authorization': `Bearer ${token}` }
+    });
+    if (!response.ok) throw new Error('Failed to fetch user submissions');
+    return await response.json();
+  } catch (err) {
+    console.error('Error fetching user submissions:', err);
+    return [];
+  }
 };
 
 /**
  * Create Submission
  * POST /api/submissions (Protected)
- * TODO: Implement real call
  */
 export const createSubmission = async (token, submissionData) => {
-  console.log('TODO: Implement POST /api/submissions', submissionData);
-  // submissionData: { flavorName, bagColor, fontChoice, keyFlavors }
-  // Returns: { _id, userId, flavorName, bagColor, fontChoice, keyFlavors, voteCount, createdAt, updatedAt }
+  try {
+    const response = await fetch(`${API_BASE}/api/submissions`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
+      body: JSON.stringify(submissionData)
+    });
+    if (!response.ok) throw new Error('Failed to create submission');
+    return await response.json();
+  } catch (err) {
+    console.error('Error creating submission:', err);
+    return null;
+  }
 };
 
 /**
- * Delete Submission
- * DELETE /api/submissions/:id (Protected)
- * TODO: Implement real call
- */
-export const deleteSubmission = async (submissionId, token) => {
-  console.log('TODO: Implement DELETE /api/submissions/:id', { submissionId });
-  // Returns: { message, _id }
-};
-
-/**
- * Create Vote
- * POST /api/votes (Protected)
- * TODO: Implement real call
  */
 export const createVote = async (token, submissionId) => {
-  console.log('TODO: Implement POST /api/votes', { submissionId });
-  // Returns: { _id, userId, submissionId, createdAt }
+  try {
+    const response = await fetch(`${API_BASE}/api/votes`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
+      body: JSON.stringify({ submissionId })
+    });
+    if (!response.ok) throw new Error('Failed to create vote');
+    return await response.json();
+  } catch (err) {
+    console.error('Error creating vote:', err);
+    return null;
+  }
+};
+
+/**
+ * Get Votes for Submission
+ * GET /api/votes/:submissionId (Public)
+ */
+export const getVotesForSubmission = async (submissionId) => {
+  try {
+    const response = await fetch(`${API_BASE}/api/votes/${submissionId}`);
+    if (!response.ok) throw new Error('Failed to fetch votes');
+    return await response.json();
+  } catch (err) {
+    console.error('Error fetching votes:', err);
+    return null;
+  }
+};
+
+/**
+ * Get All Votes (Admin)
+ * GET /api/votes (Admin Protected)
+ */
+export const getAllVotes = async (token) => {
+  try {
+    const response = await fetch(`${API_BASE}/api/votes`, {
+      headers: { 'Authorization': `Bearer ${token}` }
+    });
+    if (!response.ok) throw new Error('Failed to fetch votes');
+    return await response.json();
+  } catch (err) {
+    console.error('Error fetching votes:', err);
+    return [];
+  } submissionId, createdAt }
 };
 
 /**
