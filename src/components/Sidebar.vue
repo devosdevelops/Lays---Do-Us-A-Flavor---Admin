@@ -65,7 +65,12 @@ const router = useRouter();
 const { logout } = useAuth();
 
 const isActive = (path) => {
-  return route.path.startsWith(path);
+  // For /dashboard, only match exactly /dashboard, not /dashboard/* routes
+  if (path === '/dashboard') {
+    return route.path === '/dashboard';
+  }
+  // For other paths, use exact match
+  return route.path === path;
 };
 
 const handleLogout = () => {
