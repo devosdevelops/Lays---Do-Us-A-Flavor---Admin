@@ -24,7 +24,17 @@
         </div>
 
         <!-- Submissions List -->
-        <SubmissionList :submissions-data="sortedSubmissions" />
+        <SubmissionList :submissions-data="displayedSubmissions" />
+
+        <!-- Load More Button -->
+        <div v-if="displayedSubmissions.length < sortedSubmissions.length" class="flex justify-center mt-6">
+          <button
+            @click="loadMore"
+            class="px-6 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-md transition duration-200"
+          >
+            Load More
+          </button>
+        </div>
       </div>
     </template>
   </Layout>
@@ -38,6 +48,8 @@ import { getAllSubmissions } from '../services/api.js';
 
 const submissions = ref([]);
 const isLoading = ref(true);
+const itemsPerPage = 30;
+const displayCount = ref(itemsPerPage);
 
 onMounted(async () => {
   isLoading.value = true;
@@ -60,4 +72,12 @@ const mostPopular = computed(() => {
 const sortedSubmissions = computed(() => {
   return [...submissions.value].sort((a, b) => (b.voteCount || 0) - (a.voteCount || 0));
 });
+
+const displayedSubmissions = computed(() => {
+  return sortedSubmissions.value.slice(0, displayCount.value);
+});
+
+const loadMore = () => {
+  displayCount.value += itemsPerPage;
+};
 </script>
