@@ -145,6 +145,24 @@ export const createSubmission = async (token, submissionData) => {
 };
 
 /**
+ * Delete Submission (Admin)
+ * DELETE /api/admin/submissions/:submissionId (Admin Protected)
+ */
+export const deleteSubmission = async (submissionId, token) => {
+  try {
+    const response = await fetch(`${API_BASE}/api/admin/submissions/${submissionId}`, {
+      method: 'DELETE',
+      headers: { 'Authorization': `Bearer ${token}` }
+    });
+    if (!response.ok) throw new Error('Failed to delete submission');
+    return await response.json();
+  } catch (err) {
+    console.error('Error deleting submission:', err);
+    return null;
+  }
+};
+
+/**
  */
 export const createVote = async (token, submissionId) => {
   try {
@@ -193,27 +211,7 @@ export const getAllVotes = async (token) => {
   } catch (err) {
     console.error('Error fetching votes:', err);
     return [];
-  } submissionId, createdAt }
-};
-
-/**
- * Get Votes for Submission
- * GET /api/votes/:submissionId (Public)
- * TODO: Implement real call
- */
-export const getVotesForSubmission = async (submissionId) => {
-  console.log('TODO: Implement GET /api/votes/:submissionId', { submissionId });
-  // Returns: { submissionId, voteCount, createdAt, updatedAt }
-};
-
-/**
- * Get All Votes (Admin)
- * GET /api/votes (Admin Protected)
- * TODO: Implement real call
- */
-export const getAllVotes = async (token) => {
-  console.log('TODO: Implement GET /api/votes');
-  // Returns: Array of votes
+  }
 };
 
 export default {

@@ -15,15 +15,6 @@
 
       <!-- Content -->
       <div class="p-6 space-y-6">
-        <!-- Thumbnail -->
-        <div>
-          <img
-            :src="submission.thumbnailUrl"
-            :alt="submission.flavorName"
-            class="w-full h-48 object-cover rounded-lg"
-          />
-        </div>
-
         <!-- Flavor Name -->
         <div>
           <label class="block text-sm font-semibold text-gray-700 mb-2">Flavor Name</label>
@@ -121,8 +112,6 @@
 </template>
 
 <script setup>
-import { defineProps, defineEmits } from 'vue';
-
 const props = defineProps({
   submission: {
     type: Object,

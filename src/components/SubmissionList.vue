@@ -39,16 +39,33 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 import SubmissionCard from './SubmissionCard.vue';
 import SubmissionDetail from './SubmissionDetail.vue';
 import ModalConfirm from './ModalConfirm.vue';
-import { mockSubmissions } from '../utils/mock-data.js';
+import { useAuth } from '../composables/useAuth.js';
+import { getAllSubmissions, deleteSubmission } from '../services/api.js';
 
-const submissions = ref([...mockSubmissions]);
+const props = defineProps({
+  submissionsData: {
+    type: Array,
+    default: null
+  }
+});
+
+const { token } = useAuth();
+const submissions = ref([]);
+const isLoading = ref(true);
+let submissionToDelete = null;
 const selectedSubmission = ref(null);
 const showDeleteConfirm = ref(false);
-let submissionToDelete = null;
+
+onMounted(async () => {
+  isLoading.value = true;
+  const data = await getAllSubmissions();
+  submissions.value = Array.isArray(data) ? data : [];
+  isLoading.value = false;
+});
 
 const handleViewSubmission = (submission) => {
   selectedSubmission.value = submission;
@@ -61,15 +78,12 @@ const handleRemoveSubmission = (submission) => {
 
 const confirmDelete = async () => {
   if (submissionToDelete) {
-    // TODO: Call API DELETE /api/submissions/:id
-    // TODO: Handle authentication token
-    console.log('Deleting submission:', submissionToDelete._id);
-    
-    // Remove from local list for now
-    submissions.value = submissions.value.filter(s => s._id !== submissionToDelete._id);
+    const result = await deleteSubmission(submissionToDelete._id, token.value);
+    if (result) {
+      submissions.value = submissions.value.filter(s => s._id !== submissionToDelete._id);
+      showDeleteConfirm.value = false;
+      submissionToDelete = null;
+    }
   }
-  
-  showDeleteConfirm.value = false;
-  selectedSubmission.value = null;
 };
 </script>

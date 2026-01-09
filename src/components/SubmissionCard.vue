@@ -1,18 +1,5 @@
 <template>
   <div class="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow overflow-hidden">
-    <!-- Thumbnail -->
-    <div class="relative w-full h-48 bg-gray-200 overflow-hidden">
-      <img
-        :src="submission.thumbnailUrl"
-        :alt="submission.flavorName"
-        class="w-full h-full object-cover hover:scale-105 transition-transform duration-200"
-      />
-      <!-- Status Badge -->
-      <div v-if="submission.isBanned" class="absolute top-2 right-2 bg-red-500 text-white px-3 py-1 rounded-full text-xs font-bold">
-        REMOVED
-      </div>
-    </div>
-
     <!-- Card Content -->
     <div class="p-4">
       <!-- Flavor Name -->

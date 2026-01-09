@@ -126,13 +126,23 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 import ModalConfirm from './ModalConfirm.vue';
-import { mockUsers } from '../utils/mock-data.js';
+import { useAuth } from '../composables/useAuth.js';
+import { getAllUsers, banUser } from '../services/api.js';
 
-const users = ref([...mockUsers]);
+const { token } = useAuth();
+const users = ref([]);
 const showBanConfirm = ref(false);
+const isLoading = ref(true);
 let userToBan = null;
+
+onMounted(async () => {
+  isLoading.value = true;
+  const data = await getAllUsers(token.value);
+  users.value = Array.isArray(data) ? data : [];
+  isLoading.value = false;
+});
 
 const formatDate = (dateString) => {
   const date = new Date(dateString);
@@ -146,14 +156,14 @@ const handleBanUser = (user) => {
 
 const confirmBan = async () => {
   if (userToBan) {
-    // TODO: Call API PATCH /api/users/:id with isBanned toggle
-    // TODO: Handle authentication token
-    console.log('Toggling ban for user:', userToBan._id, userToBan.isBanned);
+    const newBanStatus = !userToBan.isBanned;
+    const result = await banUser(userToBan._id, token.value, newBanStatus);
     
-    // Update locally for now
-    const userIndex = users.value.findIndex(u => u._id === userToBan._id);
-    if (userIndex !== -1) {
-      users.value[userIndex].isBanned = !users.value[userIndex].isBanned;
+    if (result) {
+      const userIndex = users.value.findIndex(u => u._id === userToBan._id);
+      if (userIndex !== -1) {
+        users.value[userIndex].isBanned = newBanStatus;
+      }
     }
   }
   

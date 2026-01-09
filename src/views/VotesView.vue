@@ -31,7 +31,7 @@
         <div class="bg-white rounded-lg shadow p-6">
           <h3 class="font-semibold text-gray-900 mb-4">Votes by Submission</h3>
           <div class="space-y-3">
-            <div v-for="submission in mockSubmissions" :key="submission._id">
+            <div v-for="submission in sortedSubmissions" :key="submission._id">
               <div class="flex justify-between mb-1">
                 <span class="text-sm font-medium text-gray-700">{{ submission.flavorName }}</span>
                 <span class="text-sm font-bold text-gray-900">{{ submission.voteCount }}</span>
@@ -51,23 +51,45 @@
 </template>
 
 <script setup>
-import { computed } from 'vue';
+import { ref, computed, onMounted } from 'vue';
 import Layout from '../components/Layout.vue';
-import { mockSubmissions } from '../utils/mock-data.js';
+import { useAuth } from '../composables/useAuth.js';
+import { getAllSubmissions, getAllVotes } from '../services/api.js';
+
+const { token } = useAuth();
+const submissions = ref([]);
+const votes = ref([]);
+const isLoading = ref(true);
+
+onMounted(async () => {
+  isLoading.value = true;
+  const submissionsData = await getAllSubmissions();
+  const votesData = await getAllVotes(token.value);
+  submissions.value = Array.isArray(submissionsData) ? submissionsData : [];
+  votes.value = Array.isArray(votesData) ? votesData : [];
+  isLoading.value = false;
+});
 
 const totalVotes = computed(() => {
-  return mockSubmissions.reduce((sum, sub) => sum + sub.voteCount, 0);
+  return submissions.value.reduce((sum, sub) => sum + (sub.voteCount || 0), 0);
 });
 
 const activeVoters = computed(() => {
+  if (totalVotes.value === 0) return 0;
   return Math.round(totalVotes.value / 4.4);
 });
 
 const avgVotesPerUser = computed(() => {
+  if (activeVoters.value === 0) return 0;
   return (totalVotes.value / activeVoters.value).toFixed(1);
 });
 
 const highestVoted = computed(() => {
-  return Math.max(...mockSubmissions.map(sub => sub.voteCount));
+  if (submissions.value.length === 0) return 1;
+  return Math.max(...submissions.value.map(sub => sub.voteCount || 0));
+});
+
+const sortedSubmissions = computed(() => {
+  return [...submissions.value].sort((a, b) => (b.voteCount || 0) - (a.voteCount || 0));
 });
 </script>
