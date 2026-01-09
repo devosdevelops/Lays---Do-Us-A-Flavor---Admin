@@ -27,7 +27,7 @@
         <!-- Submissions Section -->
         <div class="bg-white p-6 rounded-lg shadow">
           <h2 class="text-2xl font-bold text-gray-900 mb-4">Recent Submissions</h2>
-          <SubmissionList />
+          <SubmissionList :submissions-data="recentSubmissions" />
         </div>
 
         <!-- Users Section -->
@@ -41,7 +41,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, computed, onMounted } from 'vue';
 import Layout from '../components/Layout.vue';
 import SubmissionList from '../components/SubmissionList.vue';
 import UserList from '../components/UserList.vue';
@@ -49,6 +49,7 @@ import { useAuth } from '../composables/useAuth.js';
 import { getAllSubmissions, getAllUsers, getAllVotes } from '../services/api.js';
 
 const { token } = useAuth();
+const submissions = ref([]);
 const totalSubmissions = ref(0);
 const totalUsers = ref(0);
 const totalVotes = ref(0);
@@ -59,8 +60,9 @@ onMounted(async () => {
   
   try {
     // Fetch submissions
-    const submissions = await getAllSubmissions();
-    totalSubmissions.value = Array.isArray(submissions) ? submissions.length : 0;
+    const submissionData = await getAllSubmissions();
+    submissions.value = Array.isArray(submissionData) ? submissionData : [];
+    totalSubmissions.value = submissions.value.length;
     
     // Fetch users
     const users = await getAllUsers(token.value);
@@ -74,5 +76,12 @@ onMounted(async () => {
   } finally {
     isLoading.value = false;
   }
+});
+
+const recentSubmissions = computed(() => {
+  // Get 6 newest submissions (sorted by date descending)
+  return [...submissions.value]
+    .sort((a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0))
+    .slice(0, 6);
 });
 </script>
