@@ -9,7 +9,7 @@
  * TODO: Add request/response logging
  */
 
-const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+const API_BASE = import.meta.env.VITE_API_URL || 'https://lays-do-us-a-flavor-api.onrender.com';
 
 /**
  * Health Check

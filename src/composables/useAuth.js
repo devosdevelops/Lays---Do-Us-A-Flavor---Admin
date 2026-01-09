@@ -33,7 +33,7 @@ export const useAuth = () => {
 
     try {
       // Call login API endpoint
-      const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:3000'}/api/users/login`, {
+      const response = await fetch(`${import.meta.env.VITE_API_URL || 'https://lays-do-us-a-flavor-api.onrender.com'}/api/users/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
