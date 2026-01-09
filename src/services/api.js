@@ -163,6 +163,24 @@ export const deleteSubmission = async (submissionId, token) => {
 };
 
 /**
+ * Mark Submission as Winner (Admin)
+ * POST /api/admin/submissions/:submissionId/win (Admin Protected)
+ */
+export const markSubmissionAsWinner = async (submissionId, token) => {
+  try {
+    const response = await fetch(`${API_BASE}/api/admin/submissions/${submissionId}/win`, {
+      method: 'POST',
+      headers: { 'Authorization': `Bearer ${token}` }
+    });
+    if (!response.ok) throw new Error('Failed to mark submission as winner');
+    return await response.json();
+  } catch (err) {
+    console.error('Error marking submission as winner:', err);
+    return null;
+  }
+};
+
+/**
  */
 export const createVote = async (token, submissionId) => {
   try {
